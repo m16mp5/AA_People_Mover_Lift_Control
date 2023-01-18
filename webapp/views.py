@@ -29,20 +29,19 @@ def readLiftStatus(request):
         data = s.recv(1024)
         data = binascii.hexlify(data)
         data = data[-10:-8]
-        print(type(data))
 
         if data == b'10':
-            print("Lift in 6/F")
+            res = "Lift in 6/F"
         elif data == b'01':
-            print("Lift in 7/F")
+            res = "Lift in 7/F"
         else:
-            print("Unknown")
+            res = "Unknown Floor"
     
     except socket.error:
         print('send fail')
         sys.exit()
 
-    return HttpResponse(data)
+    return HttpResponse(res)
 
 def press6(request):
 
