@@ -1,0 +1,16 @@
+.highlight {
+    /*background-color: #F5ABAB !important;*/
+    color: red;
+    font-weight: bold;
+    text-align: center;
+  }
+
+.greenPositive {
+    color: green;
+    text-align: center;
+}
+
+.redNegative {
+    color: red;
+    text-align: center;
+}

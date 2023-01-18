@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Elevator</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body onload="OnLoad()">
+  
+<div class="container p-3 my-3 bg-dark text-white">
+  <div class="row">
+    <div class="col-sm-5">
+    </div>
+      <div class="col-sm-1" id="6"><div class="text-center"><h1>6</h1></div></div>
+      <div class="col-sm-1" id="7"><div class="text-center"><h1>7</h1></div></div>
+    <div class="col-sm-5">
+    </div>
+  </div>
+
+
+<form id="dispatch" action="/">
+
+  <div class="row mt-5">
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-2">
+      <button id="b6" onclick="OnClickButton(id)" type="button" name="control" class="btn btn-primary btn-block"><h1>6</h1></button>
+    </div>
+    <div class="col-sm-2">
+      <button id="b7" onclick="OnClickButton(id)" type="button" name="control" class="btn btn-primary btn-block"><h1>7</h1></button>
+    </div>
+    <div class="col-sm-4">
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-2">
+      <button id="bc" onclick="OnClickButton(id)" type="button" name="control" class="btn btn-primary btn-block"><h1>DC</h1></button>
+    </div>
+    <div class="col-sm-2">
+      <button id="bo" onclick="OnClickButton(id)" type="button" name="control" class="btn btn-primary btn-block"><h1>DO</h1></button>
+    </div>
+    <div class="col-sm-4">
+    </div>
+  </div>
+
+ </div>
+</form>
+
+<script>
+var d;
+
+function OnClickButton(id)
+{
+  var get_param="/dispatch?";
+
+  var button = document.getElementById(id);
+  button.style.color = "red";
+
+  if(button.id == "bo")
+    get_param += "bn=do&";
+  else if(button.id =="bc")
+    get_param += "bn=dc&";
+  else if(button.id == "b6")
+    get_param += "bn=6&";
+  else if(button.id == "b7")
+    get_param += "bn=7&";
+
+  console.log(get_param);
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", get_param, true);
+  xhttp.send();  
+  xhttp.onload = function(){
+  }
+}
+
+function OnLoad(){
+  setInterval(function(){ 
+    GetElevatorStatus();
+  }, 1000);
+}
+
+function GetElevatorStatus(){
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "/status", true);
+  xhttp.send();
+  xhttp.onload = function() {
+    d = JSON.parse(xhttp.response);
+    console.log(d);
+
+    if(d["door"]=="op"){
+      status = "Door Open ";
+    }
+    else if(d["door"]=="cd"){
+      status = "Door Closed ";
+    }
+    else if(d["door"]=="tx"){
+      status = "Door in Transit ";
+    }
+
+    if(d["idle"]==0){
+      status += "";
+    }
+    else if(d["idle"]>0){
+      status += "   [ Idle time (s): "+d["idle"]+" ]";
+    }
+
+    var status_text = document.getElementById("STATUS");
+    status_text.innerHTML = status;
+    status_text.style.textAlign = "center";
+    status_text.style.fontSize = "x-large";
+    status_text.style.fontWeight = "900";
+
+    document.getElementById("6").style.color = "white";
+    document.getElementById("7").style.color = "white";
+
+
+    if(d["floor"]=="6"){
+      document.getElementById("b6").style.color = "red";
+    }
+    else if(d["floor"]=="7"){
+      document.getElementById("b7").style.color = "red";
+    }
+    
+    if(d["idle"] > 0 || d["door"]=="op" || d["door"]=="tx"){
+      if(d["floor"]=="6") document.getElementById("b4").style.color = "white";
+      if(d["floor"]=="7") document.getElementById("b5").style.color = "white";
+    }
+
+    if(d["busy"]){
+      document.getElementById("bo").disabled = true;
+      document.getElementById("bc").disabled = true;
+      document.getElementById("b6").disabled = true;
+      document.getElementById("b7").disabled = true;
+    }
+    if(d["busy"]==0 || d["host"]=="yes"){
+      document.getElementById("bo").disabled = false;
+      document.getElementById("bc").disabled = false;
+      document.getElementById("b6").disabled = false;
+      document.getElementById("b7").disabled = false;
+    }
+
+  };
+}
+
+</script>
+
+</body>
+</html>
+
