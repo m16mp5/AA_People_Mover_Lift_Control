@@ -216,5 +216,3 @@ def releaseDoorOpen(request):
         sys.exit()
     
     return HttpResponse("OK!")
-
-
