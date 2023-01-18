@@ -1,0 +1,7 @@
+curl http://127.0.0.1:8000/readLiftStatus/
+curl http://127.0.0.1:8000/press6/
+curl http://127.0.0.1:8000/press7/
+curl http://127.0.0.1:8000/pressDoorClose/
+curl http://127.0.0.1:8000/releaseDoorClose/
+curl http://127.0.0.1:8000/pressDoorOpen/
+curl http://127.0.0.1:8000/releaseDoorOpen/
