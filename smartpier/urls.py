@@ -6,6 +6,6 @@ from webapp import views
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('', views.action),
-    path('readLiftStatus/', views.readLiftStatus),
+    path('readLiftStatus', views.readLiftStatus),
 ]
 

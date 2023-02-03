@@ -1,3 +1,8 @@
+- set static IP 
+IP address: 192.168.0.10
+Submask: 255.255.255.0
+Default Gateway: 192.168.0.1
+
 curl http://127.0.0.1:8000/readLiftStatus/
 curl http://127.0.0.1:8000/?action=press6
 curl http://127.0.0.1:8000/?action=press7
